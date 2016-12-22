@@ -15,8 +15,8 @@ defmodule Lex do
     IO.puts "Кастуююююю вопрос"
 
     case answer do
-      :win -> IO.puts "Заебись, я выйграл"
-      :lose -> IO.puts "Вот говно.."; retry_answer(from)
+      :win -> IO.puts "Я выйграл"
+      :lose -> IO.puts "Луз.."; retry_answer(from)
     end
 
     {:reply, nil, state}
