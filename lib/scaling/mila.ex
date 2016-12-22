@@ -5,8 +5,6 @@ defmodule Mila do
 
   use GenServer
 
-
-
   def start_link, do: GenServer.start_link(__MODULE__, nil, name: __MODULE__)
 
   @doc """
@@ -17,25 +15,20 @@ defmodule Mila do
     {:ok, secret_number}
   end
 
-  def handle_call({:offer_number, number}, from, state) do
-    IO.puts "Получила число: #{number}"
-
+  def handle_cast({:offer_number, number}, state) do
     answer = cond do
-      (number == state) -> :win
-      true -> :lose
+      (number == state) -> IO.puts "Mila: ты выйграл)"; :win
+      true -> IO.puts "Mila: не получилось, попробуй еще"; :lose
     end
 
-    # GenServer.call(from, {:answer, answer})
-    IO.puts "Ответ #{IO.inspect(answer)}, state: #{state}"
+    GenServer.cast({Lex, :"n1@127.0.0.1"}, {:answer, answer})
 
-    GenServer.call({Lex, :"n1@127.0.0.1"}, {:answer, answer})
-
-    {:reply, answer, state}
+    {:noreply, state}
   end
 
   # Api
   def offer_number(number) do
-    GenServer.call(__MODULE__, {:offer_number, number})
+    GenServer.cast(__MODULE__, {:offer_number, number})
   end
 
   def secret_number do

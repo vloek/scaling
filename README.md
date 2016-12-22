@@ -21,4 +21,6 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
       [applications: [:scaling]]
     end
     ```
-
+## Run
+  n1@host$ iex --name n1@127.0.0.1 --erl "-config sys.config" -S mix
+  n2@host$ iex --name n2@127.0.0.1 --erl "-config sys.config" -S mix

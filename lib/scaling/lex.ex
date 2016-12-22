@@ -11,23 +11,23 @@ defmodule Lex do
     {:ok, master}
   end
 
-  def handle_call({:answer, answer}, from, state) do
-    IO.puts "Кастуююююю вопрос"
-
+  def handle_cast({:answer, answer}, state) do
     case answer do
-      :win -> IO.puts "Я выйграл"
-      :lose -> IO.puts "Луз.."; retry_answer(from)
+      :win -> IO.puts "Lex: Уиии!"
+      :lose ->
+        IO.puts "Lex: Ну вот.."
+        retry_answer({Mila, :"n2@127.0.0.1"})
     end
 
-    {:reply, nil, state}
+    {:noreply, state}
   end
 
   # Api
 
   def retry_answer(master) do
-    :timer.sleep(1000)
-
-    GenServer.call({Mila, :"n2@127.0.0.1"}, {:offer_number, prob_num})
+    number = prob_num
+    :ok = GenServer.cast({Mila, :"n2@127.0.0.1"}, {:offer_number, number})
+    IO.puts "Lex: мое число #{prob_num}"
   end
 
   defp prob_num do
